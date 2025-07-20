@@ -69,7 +69,7 @@ for dir_ in tqdm(all_dirs, desc="Processing classes"):
     print(f"[✓] Processed {used_images} images for '{dir_}'")
 
 # Save to pickle
-with open('data.pickle', 'wb') as f:
+with open('kalle/data.pickle', 'wb') as f:
     pickle.dump({'data': data, 'labels': labels}, f)
 
-print(f"\n✅ Finished! Saved {len(data)} samples to data.pickle.")
+print(f"\n✅ Finished! Saved {len(data)} samples to kalle/data.pickle.")
