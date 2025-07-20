@@ -16,14 +16,20 @@ hands = mp_hands.Hands(static_image_mode=True, min_detection_confidence=0.3)
 
 DATA_DIR = './dataset/asl_alphabet_train/asl_alphabet_train/'
 
+EXCLUDE_LABELS = {"del", "nothing", "space", "Z"}
+
 MAX_IMAGES_PER_CLASS = 100  # Change to None to use full set
+
 
 
 data = []
 labels = []
 
 # Progress bar
-all_dirs = [d for d in os.listdir(DATA_DIR) if not d.startswith('.')]
+all_dirs = [
+    d for d in os.listdir(DATA_DIR)
+    if not d.startswith('.') and d not in EXCLUDE_LABELS
+]
 for dir_ in tqdm(all_dirs, desc="Processing classes"):
     dir_path = os.path.join(DATA_DIR, dir_)
     image_files = [f for f in os.listdir(dir_path) if not f.startswith('.')]
