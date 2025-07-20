@@ -1,6 +1,7 @@
 from keras.models import model_from_json
 import cv2
 import numpy as np
+import time
 
 json_file = open("signlanguagedetectionmodel48x48.json", "r")
 model_json = json_file.read()
@@ -13,11 +14,11 @@ def extract_features(image):
     feature = feature.reshape(1,48,48,1)
     return feature/255.0
 
-cap = cv2.VideoCapture(0)
+# cap = cv2.VideoCapture(0)
 label = ['A', 'M', 'N', 'S', 'T', 'blank']
 while True:
 
-    _,frame = cap.read()
+    frame = cv2.imread("../dataset/asl_alphabet_train/asl_alphabet_train/N/N6.jpg")
     cv2.rectangle(frame,(0,40),(300,300),(0, 165, 255),1)
     cropframe=frame[40:300,0:300]
     cropframe=cv2.cvtColor(cropframe,cv2.COLOR_BGR2GRAY)
@@ -33,6 +34,7 @@ while True:
         cv2.putText(frame, f'{prediction_label}  {accu}%', (10, 30),cv2.FONT_HERSHEY_SIMPLEX,1, (255, 255, 255),2,cv2.LINE_AA)
     cv2.imshow("output",frame)
     cv2.waitKey(27)
+    time.sleep(25)
     
 cap.release()
 cv2.destroyAllWindows()
