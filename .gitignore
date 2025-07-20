@@ -5,3 +5,6 @@ __pycache__/
 venv/
 .venv
 .DS_Store
+
+dataset/asl_alphabet_train/.DS_Store
+dataset/.DS_Store
