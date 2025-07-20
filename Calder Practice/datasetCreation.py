@@ -16,9 +16,9 @@ hands = mp_hands.Hands(static_image_mode=True, min_detection_confidence=0.3)
 
 DATA_DIR = './dataset/asl_alphabet_train/asl_alphabet_train/'
 
-EXCLUDE_LABELS = {"del", "nothing", "space", "Z"}
+EXCLUDE_LABELS = {"del", "nothing", "space", "Z", "T", "X", "J", "K", "Q"}
 
-MAX_IMAGES_PER_CLASS = 100  # Change to None to use full set
+MAX_IMAGES_PER_CLASS = 500  # Change to None to use full set
 
 
 
@@ -68,7 +68,7 @@ for dir_ in tqdm(all_dirs, desc="Processing classes"):
     print(f"[✓] Processed {used_images} images for '{dir_}'")
 
 # Save to pickle
-with open('data.pickle', 'wb') as f:
+with open('data.pickles', 'wb') as f:
     pickle.dump({'data': data, 'labels': labels}, f)
 
 print(f"\n✅ Finished! Saved {len(data)} samples to data.pickle.")
