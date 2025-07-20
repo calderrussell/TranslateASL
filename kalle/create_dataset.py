@@ -17,9 +17,9 @@ hands = mp_hands.Hands(static_image_mode=True, min_detection_confidence=0.3)
 DATA_DIR = './dataset/asl_alphabet_train/asl_alphabet_train/'
 
 EXCLUDE_LABELS = {"del", "nothing", "space"}
-INCLUDE_LABELS = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'}
+INCLUDE_LABELS = {'M', 'I', 'T'}
 
-MAX_IMAGES_PER_CLASS = None  # Change to None to use full set
+MAX_IMAGES_PER_CLASS = 100  # Change to None to use full set
 
 
 
@@ -29,7 +29,7 @@ labels = []
 # Progress bar
 all_dirs = [
     d for d in os.listdir(DATA_DIR)
-    if not d.startswith('.') and d not in EXCLUDE_LABELS
+    if not d.startswith('.') and d in INCLUDE_LABELS
 ]
 for dir_ in tqdm(all_dirs, desc="Processing classes"):
     dir_path = os.path.join(DATA_DIR, dir_)
@@ -69,7 +69,7 @@ for dir_ in tqdm(all_dirs, desc="Processing classes"):
     print(f"[✓] Processed {used_images} images for '{dir_}'")
 
 # Save to pickle
-with open('kalle/full_data.pickle', 'wb') as f:
+with open('kalle/mit_data.pickle', 'wb') as f:
     pickle.dump({'data': data, 'labels': labels}, f)
 
-print(f"\n✅ Finished! Saved {len(data)} samples to kalle/full_data.pickle.")
+print(f"\n✅ Finished! Saved {len(data)} samples to kalle/mit_data.pickle.")

@@ -4,10 +4,11 @@ import cv2
 import mediapipe as mp
 import numpy as np
 
-model_dict = pickle.load(open('kalle/big_model.p', 'rb'))
+model_dict = pickle.load(open('kalle/xgboost.p', 'rb'))
 model = model_dict['model']
+label_encoder = model_dict['label_encoder']
 
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(1)  # 0 is phone, 1 is computer
 
 mp_hands = mp.solutions.hands
 mp_drawing = mp.solutions.drawing_utils
@@ -60,10 +61,16 @@ while True:
         print(f"Feature vector length: {len(data_aux)}")
         prediction = model.predict([np.asarray(data_aux)])
 
-        predicted_character = prediction[0]
+        predicted_character = label_encoder.inverse_transform(prediction)[0]
 
         cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 0), 4)
-        cv2.putText(frame, predicted_character, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (0, 0, 0), 3,
+        
+        # Draw a solid white bar above the rectangle
+        bar_height = 40  # You can adjust the height as needed
+        cv2.rectangle(frame, (x1, y1 - bar_height), (x2, y1), (255, 255, 255), -1)
+        
+        # Draw the predicted character on the white bar
+        cv2.putText(frame, predicted_character, (x1 + 10, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (0, 0, 0), 3,
                     cv2.LINE_AA)
 
     cv2.imshow('frame', frame)
