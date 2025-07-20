@@ -6,7 +6,7 @@ from sklearn.metrics import accuracy_score
 import numpy as np
 
 
-data_dict = pickle.load(open('kalle/data.pickle', 'rb'))
+data_dict = pickle.load(open('kalle/full_data.pickle', 'rb'))
 
 data = np.asarray(data_dict['data'])
 labels = np.asarray(data_dict['labels'])
@@ -23,6 +23,6 @@ score = accuracy_score(y_predict, y_test)
 
 print('{}% of samples were classified correctly !'.format(score * 100))
 
-f = open('kalle/model.p', 'wb')
+f = open('kalle/big_model.p', 'wb')
 pickle.dump({'model': model}, f)
 f.close()

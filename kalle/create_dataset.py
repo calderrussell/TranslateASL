@@ -29,7 +29,7 @@ labels = []
 # Progress bar
 all_dirs = [
     d for d in os.listdir(DATA_DIR)
-    if not d.startswith('.') and d in INCLUDE_LABELS
+    if not d.startswith('.') and d not in EXCLUDE_LABELS
 ]
 for dir_ in tqdm(all_dirs, desc="Processing classes"):
     dir_path = os.path.join(DATA_DIR, dir_)
@@ -69,7 +69,7 @@ for dir_ in tqdm(all_dirs, desc="Processing classes"):
     print(f"[✓] Processed {used_images} images for '{dir_}'")
 
 # Save to pickle
-with open('kalle/data.pickle', 'wb') as f:
+with open('kalle/full_data.pickle', 'wb') as f:
     pickle.dump({'data': data, 'labels': labels}, f)
 
-print(f"\n✅ Finished! Saved {len(data)} samples to kalle/data.pickle.")
+print(f"\n✅ Finished! Saved {len(data)} samples to kalle/full_data.pickle.")
