@@ -1,95 +1,74 @@
-import torch
-import torch.nn as nn
-import torch.optim as optim
-import torchvision.transforms as transforms
-from torchvision import datasets
-from torch.utils.data import DataLoader
+import pickle
 
-# -----------------------------
-# 1. Load Data (example: CIFAR-10)
-# -----------------------------
-transform = transforms.Compose([
-    transforms.ToTensor(),
-    transforms.Normalize((0.5,), (0.5,))
-])
+import cv2
+import mediapipe as mp
+import numpy as np
 
-train_dataset = datasets.ImageFolder(root='dataset/asl_alphabet_train', transform=transform)
-val_dataset = datasets.ImageFolder(root='dataset/asl_alphabet_test', transform=transform)
+model_dict = pickle.load(open('model.p', 'rb'))
+model = model_dict['model']
 
-trainloader = DataLoader(train_dataset, batch_size=32, shuffle=True)
-testloader = DataLoader(val_dataset, batch_size=1, shuffle=False)
+cap = cv2.VideoCapture(0)
 
-# -----------------------------
-# 2. Define CNN Model
-# -----------------------------
-class SimpleCNN(nn.Module):
-    def __init__(self):
-        super(SimpleCNN, self).__init__()
+mp_hands = mp.solutions.hands
+mp_drawing = mp.solutions.drawing_utils
+mp_drawing_styles = mp.solutions.drawing_styles
 
-        # Convolutional layers
-        self.conv = nn.Sequential(
-            nn.Conv2d(3, 16, 3, padding=1),  # 3xHxW -> 16xHxW
-            nn.ReLU(),
-            nn.MaxPool2d(2, 2),              # 16xH/2xW/2
+hands = mp_hands.Hands(static_image_mode=False, max_num_hands=1, min_detection_confidence=0.3)
 
-            nn.Conv2d(16, 32, 3, padding=1), # 32xH/2xW/2 -> 32xH/4xW/4
-            nn.ReLU(),
-            nn.MaxPool2d(2, 2)               # 32xH/4xW/4
-        )
+while True:
 
-        # Dynamically compute the flattened size
-        with torch.no_grad():
-            dummy_input = torch.zeros(1, 3, 128, 128)  # Change 128x128 to your actual input size
-            dummy_output = self.conv(dummy_input)
-            self.flattened_size = dummy_output.view(-1).shape[0]
+    data_aux = []
+    x_ = []
+    y_ = []
 
-        # Fully connected layers
-        self.fc = nn.Sequential(
-            nn.Flatten(),
-            nn.Linear(self.flattened_size, 128),
-            nn.ReLU(),
-            nn.Linear(128, 27)  # 27 classes for your ASL dataset
-        )
+    ret, frame = cap.read()
 
-    def forward(self, x):
-        x = self.conv(x)
-        x = self.fc(x)
-        return x
+    H, W, _ = frame.shape
 
-# -----------------------------
-# 3. Train the Model
-# -----------------------------
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-model = SimpleCNN().to(device)
+    frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
-criterion = nn.CrossEntropyLoss()
-optimizer = optim.Adam(model.parameters(), lr=0.001)
+    results = hands.process(frame_rgb)
+    if results.multi_hand_landmarks:
+        for hand_landmarks in results.multi_hand_landmarks:
+            mp_drawing.draw_landmarks(
+                frame,  # image to draw
+                hand_landmarks,  # model output
+                mp_hands.HAND_CONNECTIONS,  # hand connections
+                mp_drawing_styles.get_default_hand_landmarks_style(),
+                mp_drawing_styles.get_default_hand_connections_style())
 
-for epoch in range(5):  # Train for 5 epochs
-    running_loss = 0.0
-    for images, labels in trainloader:
-        images, labels = images.to(device), labels.to(device)
+        for hand_landmarks in results.multi_hand_landmarks:
+            for i in range(len(hand_landmarks.landmark)):
+                x = hand_landmarks.landmark[i].x
+                y = hand_landmarks.landmark[i].y
 
-        optimizer.zero_grad()
-        outputs = model(images)
-        loss = criterion(outputs, labels)
-        loss.backward()
-        optimizer.step()
+                x_.append(x)
+                y_.append(y)
 
-        running_loss += loss.item()
-    print(f"Epoch {epoch + 1}, Loss: {running_loss:.3f}")
+            for i in range(len(hand_landmarks.landmark)):
+                x = hand_landmarks.landmark[i].x
+                y = hand_landmarks.landmark[i].y
+                data_aux.append(x - min(x_))
+                data_aux.append(y - min(y_))
 
-# -----------------------------
-# 4. Evaluate the Model
-# -----------------------------
-correct = 0
-total = 0
-with torch.no_grad():
-    for images, labels in testloader:
-        images, labels = images.to(device), labels.to(device)
-        outputs = model(images)
-        _, predicted = torch.max(outputs.data, 1)
-        total += labels.size(0)
-        correct += (predicted == labels).sum().item()
+        x1 = int(min(x_) * W) - 10
+        y1 = int(min(y_) * H) - 10
 
-print(f"Accuracy on test set: {100 * correct / total:.2f}%")
+        x2 = int(max(x_) * W) - 10
+        y2 = int(max(y_) * H) - 10
+
+        print(f"Feature vector length: {len(data_aux)}")
+        prediction = model.predict([np.asarray(data_aux)])
+
+        predicted_character = prediction[0]
+
+        cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 0), 4)
+        cv2.putText(frame, predicted_character, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (0, 0, 0), 3,
+                    cv2.LINE_AA)
+
+    cv2.imshow('frame', frame)
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
+cap.release()
+cv2.destroyAllWindows()
