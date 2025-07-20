@@ -18,7 +18,7 @@ hands = mp_hands.Hands(static_image_mode=True, min_detection_confidence=0.3)
 DATA_DIR = './dataset/asl_alphabet_train/asl_alphabet_train/'
 
 EXCLUDE_LABELS = {"del", "nothing", "space"}
-INCLUDE_LABELS = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'}
+INCLUDE_LABELS = {'M', 'I', 'T'}
 
 MAX_IMAGES_PER_CLASS = 500  # Change to None to use full set
 
@@ -75,7 +75,7 @@ output_dir = os.path.join('.', 'calder')
 os.makedirs(output_dir, exist_ok=True)
 
 # Save to pickle in the Calder folder
-pickle_path = os.path.join(output_dir, 'data.pickle')
+pickle_path = os.path.join(output_dir, 'MIT.pickle')
 with open(pickle_path, 'wb') as f:
     pickle.dump({'data': data, 'labels': labels}, f)
 
