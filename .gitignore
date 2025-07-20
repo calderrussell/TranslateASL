@@ -1,6 +1,7 @@
-tf-env/
 __pycache__/
 *.pyc
-.env
+.venv
 .DS_Store
 venv/
+.venv
+.DS_Store
