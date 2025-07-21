@@ -7,7 +7,7 @@ from sklearn.preprocessing import LabelEncoder
 
 
 # Load and encode labels
-data_dict = pickle.load(open('kalle/mit_data.pickle', 'rb'))
+data_dict = pickle.load(open('kalle/full_depth_data.pickle', 'rb'))
 data = np.asarray(data_dict['data'])
 labels = np.asarray(data_dict['labels'])
 
@@ -34,5 +34,5 @@ score = accuracy_score(y_test, y_predict)
 print(f'{score * 100:.2f}% of samples were classified correctly!')
 
 # Save the model
-with open('kalle/mit_xgboost.p', 'wb') as f:
+with open('kalle/depth_xgboost.p', 'wb') as f:
     pickle.dump({'model': model, 'label_encoder': label_encoder}, f)

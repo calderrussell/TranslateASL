@@ -4,7 +4,7 @@ import mediapipe as mp
 import numpy as np
 
 # Load model and label encoder
-model_dict = pickle.load(open('kalle/mit_xgboost.p', 'rb'))
+model_dict = pickle.load(open('kalle/xgboost.p', 'rb'))
 model = model_dict['model']
 label_encoder = model_dict['label_encoder']
 
@@ -16,7 +16,7 @@ mp_hands = mp.solutions.hands
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
 
-hands = mp_hands.Hands(static_image_mode=False, max_num_hands=4, min_detection_confidence=0.3)
+hands = mp_hands.Hands(static_image_mode=False, max_num_hands=2, min_detection_confidence=0.5)
 
 while True:
     ret, frame = cap.read()
@@ -54,7 +54,7 @@ while True:
                 data_aux.append(x - min(x_))
                 data_aux.append(y - min(y_))
 
-            if len(data_aux) == 42:  # 21 landmarks * 2 coords
+            if len(data_aux) == 21*2:  # 21 landmarks * 2 coords
                 x1 = int(min(x_) * W) - 10
                 y1 = int(min(y_) * H) - 10
                 x2 = int(max(x_) * W) + 10
