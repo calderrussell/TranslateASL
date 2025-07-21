@@ -2,6 +2,7 @@
 mediapipe>=0.10.9
 scikit-learn>=1.4.0
 tensorflow>=2.16.0,<2.17.0
+xgboost
 
 # Image/video processing (no version pin to avoid NumPy conflict)
 opencv-python
