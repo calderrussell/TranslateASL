@@ -71,11 +71,11 @@ for dir_ in tqdm(all_dirs, desc="Processing classes"):
 
     print(f"[✓] Processed {used_images} images for '{dir_}'")
 
-output_dir = os.path.join('.', 'calder')
+output_dir = os.path.join('.', 'calder/data')
 os.makedirs(output_dir, exist_ok=True)
 
 # Save to pickle in the Calder folder
-pickle_path = os.path.join(output_dir, 'MIT.pickle')
+pickle_path = os.path.join(output_dir, 'data.pickle')
 with open(pickle_path, 'wb') as f:
     pickle.dump({'data': data, 'labels': labels}, f)
 

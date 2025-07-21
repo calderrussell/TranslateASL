@@ -6,7 +6,7 @@ import time
 from collections import Counter
 
 # Load model and label encoder
-model_dict = pickle.load(open('calder/model.p', 'rb'))
+model_dict = pickle.load(open('calder/models/model.p', 'rb'))
 model = model_dict['model']
 
 # Initialize prediction buffer and timer
