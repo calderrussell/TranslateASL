@@ -68,7 +68,7 @@ while True:
                 data_aux.append(y - min(y_))
                 data_aux.append(z - min(z_))
 
-            if len(data_aux) == 21*3:  # 21 landmarks * 2 coords
+            if len(data_aux) == 21*3:  # 21 landmarks * 3 coords
                 prediction = model.predict([np.asarray(data_aux)])
                 predicted_character = prediction[0]
 
@@ -115,7 +115,7 @@ while True:
                 cv2.FONT_HERSHEY_SIMPLEX, 1.2, (255, 255, 255), 2, cv2.LINE_AA)
 
 
-    cv2.imshow('frame', frame)
+    cv2.imshow('Live ASL Translation', frame)
     key = cv2.waitKey(1) & 0xFF
     if key == ord('q'):
         break
