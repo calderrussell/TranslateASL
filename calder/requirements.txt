@@ -1,3 +1,16 @@
+# Core ML stack
+mediapipe>=0.10.9
+scikit-learn>=1.4.0
+tensorflow>=2.16.0,<2.17.0
+
+# Image/video processing (no version pin to avoid NumPy conflict)
 opencv-python
-mediapipe
-scikit-learn
+opencv-contrib-python
+
+# Force a compatible NumPy and ml-dtypes for TF
+numpy>=1.26.0,<2.0.0
+ml-dtypes>=0.3.1,<0.4.0
+
+# Optional visualization and progress bar
+matplotlib
+tqdm
