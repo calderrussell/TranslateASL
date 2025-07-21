@@ -4,7 +4,7 @@ import mediapipe as mp
 import numpy as np
 
 # Load model and label encoder
-model_dict = pickle.load(open('kalle/depth_xgboost.p', 'rb'))
+model_dict = pickle.load(open('kalle/depth_xgboost_full_pipeline.p', 'rb'))
 model = model_dict['model']
 label_encoder = model_dict['label_encoder']
 
