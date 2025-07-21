@@ -7,7 +7,7 @@ from sklearn.metrics import accuracy_score
 import numpy as np
 
 
-data_dict = pickle.load(open('calder/MIT.pickle', 'rb'))
+data_dict = pickle.load(open('kalle/full_depth_data.pickle', 'rb'))
 
 data = np.asarray(data_dict['data'])
 labels = np.asarray(data_dict['labels'])
@@ -28,7 +28,7 @@ output_dir = os.path.join('.', 'calder')
 os.makedirs(output_dir, exist_ok=True)
 
 # Save model to pickle in the Calder folder
-model_path = os.path.join(output_dir, 'model.p')
+model_path = os.path.join(output_dir, 'forest.p')
 with open(model_path, 'wb') as f:
     pickle.dump({'model': model}, f)
 
