@@ -123,6 +123,10 @@ while True:
         accumulated_text = accumulated_text[:-1]
     elif key == ord('r'):  # Reset
         accumulated_text = ""
+    elif key == ord('s'):  # Reset
+        accumulated_text = accumulated_text + " "  # Add space 
+    elif key == ord('t'):  # Reset
+        accumulated_text = accumulated_text + "T"  # Add space    
 
 cap.release()
 cv2.destroyAllWindows()

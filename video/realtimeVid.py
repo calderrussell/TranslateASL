@@ -5,9 +5,9 @@ from tensorflow.keras.models import load_model
 import mediapipe as mp
 
 # ------------------ Configuration ------------------
-ACTIONS = np.array(['hello', 'how', 'you'])  # Actions your model was trained on
+ACTIONS = np.array(['hello', 'how are you'])  # List of action labels
 SEQUENCE_LENGTH = 30  # Number of frames per prediction
-MODEL_PATH = 'video/models/LSTM(2).h5'  # Path to trained model
+MODEL_PATH = 'video/models/LSTM(how are you).h5'  # Path to trained model
 
 # Load trained model
 model = load_model(MODEL_PATH)

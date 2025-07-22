@@ -10,7 +10,7 @@ from tensorflow.keras.callbacks import EarlyStopping
 
 # ------------------ Configuration ------------------
 DATA_PATH = Path("video/data")  # Path where .npy files are stored
-ACTIONS = np.array(['hello', 'how', 'you'])  # List of action labels
+ACTIONS = np.array(['hello', 'how are you'])  # List of action labels
 SEQUENCE_LENGTH = 30
 
 tb_callback = TensorBoard(log_dir='video/logs')  # TensorBoard callback for visualization
@@ -53,4 +53,4 @@ early_stop = EarlyStopping(monitor='val_loss', patience=20, restore_best_weights
 model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=2000, callbacks=[tb_callback, early_stop])
 
 # ------------------ Save Model ------------------
-model.save("video/models/LSTM(2).h5")  # Save the trained model to disk
+model.save("video/models/LSTM(how are you).h5")  # Save the trained model to disk

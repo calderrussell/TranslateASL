@@ -10,7 +10,8 @@ from tqdm import tqdm
 DATA_PATH = Path("video/data")
 
 # List of actions (labels) to collect data for
-ACTIONS = np.array(['hello', 'how', 'you'])
+# ACTIONS = np.array(['hello', 'how', 'you'])
+ACTIONS = np.array(['how are you'])
 
 # Number of sequences (videos) per action
 NUM_SEQUENCES = 30
