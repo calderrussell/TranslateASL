@@ -11,13 +11,13 @@ DATA_PATH = Path("video/data")
 
 # List of actions (labels) to collect data for
 # ACTIONS = np.array(['hello', 'how', 'you'])
-ACTIONS = np.array(['how are you'])
+ACTIONS = np.array(['z'])
 
 # Number of sequences (videos) per action
-NUM_SEQUENCES = 30
+NUM_SEQUENCES = 40
 
 # Number of frames per sequence
-SEQUENCE_LENGTH = 30
+SEQUENCE_LENGTH = 10
 
 # Create directory structure for saving data
 tqdm.write("Creating directories...")
