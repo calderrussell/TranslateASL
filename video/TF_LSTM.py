@@ -10,8 +10,8 @@ from tensorflow.keras.callbacks import EarlyStopping
 
 # ------------------ Configuration ------------------
 DATA_PATH = Path("video/data")  # Path where .npy files are stored
-ACTIONS = np.array(['hello', 'how are you'])  # List of action labels
-SEQUENCE_LENGTH = 30
+ACTIONS = np.array(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'])  # List of action labels
+SEQUENCE_LENGTH = 10 # Number of frames in each sequence
 
 tb_callback = TensorBoard(log_dir='video/logs')  # TensorBoard callback for visualization
 
@@ -49,8 +49,8 @@ model.add(Dense(len(ACTIONS), activation='softmax'))  # Output layer
 # ------------------ Compile and Train ------------------
 model.compile(optimizer='Adam', loss='categorical_crossentropy', metrics=['categorical_accuracy'])
 
-early_stop = EarlyStopping(monitor='val_loss', patience=20, restore_best_weights=True)
+early_stop = EarlyStopping(monitor='val_loss', patience=38, restore_best_weights=True)
 model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=2000, callbacks=[tb_callback, early_stop])
 
 # ------------------ Save Model ------------------
-model.save("video/models/LSTM(how are you).h5")  # Save the trained model to disk
+model.save("video/models/LSTM_alpha.h5")  # Save the trained model to disk
