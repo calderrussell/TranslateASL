@@ -14,12 +14,14 @@ from sklearn.metrics import multilabel_confusion_matrix, accuracy_score
 # 4. MODEL_PATH: Path to your trained model file (.h5), must match the model you want
 
 DATA_PATH = Path("video/data")  # Path where .npy files are stored
-ACTIONS = np.array(['hello', 'how are you'])  # List of action labels
-SEQUENCE_LENGTH = 30
+ACTIONS = np.array(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'])  # List of action labels
+SEQUENCE_LENGTH = 10
 
 # Load the trained model
-MODEL_PATH = 'video/models/LSTM(how are you).h5'
+MODEL_PATH = 'video/models/LSTM_alpha.h5'
 model = load_model(MODEL_PATH)
+
+model.summary()  # Print model summary for verification
 
 # Create test data
 sequences, labels = [], []

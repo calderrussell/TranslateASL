@@ -5,9 +5,9 @@ from tensorflow.keras.models import load_model
 import mediapipe as mp
 
 # ------------------ Configuration ------------------
-ACTIONS = np.array(['hello', 'how are you'])  # List of action labels
-SEQUENCE_LENGTH = 30  # Number of frames per prediction
-MODEL_PATH = 'video/models/LSTM(how are you).h5'  # Path to trained model
+ACTIONS = np.array(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'])  # List of action labels
+SEQUENCE_LENGTH = 10  # Number of frames per prediction
+MODEL_PATH = 'video/models/LSTM_alpha_tuned.h5'  # Path to trained model
 
 # Load trained model
 model = load_model(MODEL_PATH)
@@ -56,7 +56,7 @@ def draw_landmarks(image, results):
 cap = cv2.VideoCapture(0)  # Open webcam
 
 sequence = deque(maxlen=SEQUENCE_LENGTH)  # Holds last N keypoint frames
-threshold = 0.8  # Prediction confidence threshold
+threshold = 0.5  # Prediction confidence threshold
 
 with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=0.5) as holistic:
     while cap.isOpened():
